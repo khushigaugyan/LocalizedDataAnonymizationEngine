@@ -1,0 +1,55 @@
+.file-types {
+    padding: 100px 10%;
+    background: #F8FAFC;
+}
+
+.file-types-header {
+    max-width: 700px;
+    margin: 0 auto 70px;
+    text-align: center;
+}
+
+.file-types-header h2 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 20px;
+}
+
+.file-types-header p {
+    font-size: 18px;
+    color: #64748B;
+    line-height: 1.7;
+}
+
+.file-types-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+}
+
+.file-type-card {
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 35px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    color: #2563EB;
+}
+
+.file-type-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 40px rgba(37, 99, 235, 0.12);
+}
+
+.file-type-card h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1E293B;
+}
