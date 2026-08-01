@@ -1,9 +1,9 @@
 .hero {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items:flex-start;
     gap: 70px;
-    padding: 60px 10%;
+    padding: 10px 10% 60px;
     position: relative;
     overflow: hidden;
     background:
@@ -37,7 +37,9 @@
 }
 
 .hero-content h1 {
-    font-size: 58px;
+    font-size:52px;
+    line-height:1.15;
+    letter-spacing:-1px;
     line-height: 1.1;
     color: #0F172A;
     margin-bottom: 24px;
@@ -45,6 +47,7 @@
 }
 
 .hero-content p {
+    max-width:520px;
     font-size: 19px;
     color: #64748B;
     line-height: 1.8;
@@ -114,22 +117,20 @@
     display:flex;
     justify-content:center;
     align-items:center;
-    margin-top:-70px;
 }
 
 @media (max-width:1024px){
     .hero-image{
-        margin-top:0;
+        margin-top:40px;
     }
 }
 
 .app-window{
-    width:560px;
+    width:500px;
+    border-radius:20px;
     background:#fff;
-    border-radius:22px;
     overflow:hidden;
-    box-shadow:0 30px 60px rgba(0,0,0,.12);
-    animation:float 5s ease-in-out infinite;
+    box-shadow:0 20px 45px rgba(0,0,0,.10);
 }
 
 .window-header{
@@ -298,6 +299,24 @@
         width:100%;
         max-width:560px;
     }
+}
+
+.summary-card {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 12px;
+    background: #f5f7ff;
+    border: 1px solid #dbe4ff;
+    text-align: left;
+    max-width: 350px;
+}
+
+.summary-card h3 {
+    margin-bottom: 15px;
+}
+
+.summary-card p {
+    margin: 8px 0;
 }
 
 @media (max-width:768px){

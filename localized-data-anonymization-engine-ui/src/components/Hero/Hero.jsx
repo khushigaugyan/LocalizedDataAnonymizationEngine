@@ -1,3 +1,5 @@
+import { useRef, useState } from "react";
+
 import "./Hero.css";
 import {
   ShieldCheck,
@@ -5,10 +7,101 @@ import {
 } from "lucide-react";
 
 function Hero() {
+    const fileInputRef = useRef(null);
+
+        const [summary, setSummary] = useState(null);
+        const [uploadedFile, setUploadedFile] = useState("");
+
+      const handleFileUpload = async (event) => {
+           const file = event.target.files[0];
+
+              if (!file) return;
+
+              setUploadedFile(file.name);
+
+          if (!file) return;
+
+          const formData = new FormData();
+          formData.append("file", file);
+
+          try {
+
+              // Analyze File
+              const analyzeResponse = await fetch("http://localhost:8080/api/analyze", {
+                  method: "POST",
+                  body: formData,
+              });
+
+              if (!analyzeResponse.ok) {
+                  throw new Error("Analysis failed");
+              }
+
+              const analysis = await analyzeResponse.json();
+
+              setSummary(analysis);
+
+              // Download Anonymized File
+              const uploadResponse = await fetch("http://localhost:8080/api/upload", {
+                  method: "POST",
+                  body: formData,
+              });
+
+              if (!uploadResponse.ok) {
+                  throw new Error("Upload failed");
+              }
+
+              const blob = await uploadResponse.blob();
+
+              const url = window.URL.createObjectURL(blob);
+
+              const a = document.createElement("a");
+              a.href = url;
+
+              const disposition = uploadResponse.headers.get("Content-Disposition");
+              console.log("Content-Disposition:", disposition);
+
+              let fileName = "anonymized.txt";
+
+              if (disposition && disposition.includes("filename=")) {
+                  fileName = disposition
+                      .split("filename=")[1]
+                      .replace(/"/g, "");
+              }
+
+              a.download = fileName;
+
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+
+              window.URL.revokeObjectURL(url);
+//               a.remove();
+//
+//               window.URL.revokeObjectURL(url);
+
+          } catch (error) {
+
+              console.error(error);
+              alert(error.message);
+
+          }
+      };
   return (
     <section className="hero">
 
       {/* LEFT CONTENT */}
+
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        onClick={() => console.log("Input clicked")}
+        onChange={(e) => {
+          console.log("onChange fired");
+          console.log(e.target.files);
+          handleFileUpload(e);
+        }}
+      />
 
       <div className="hero-content">
 
@@ -31,7 +124,10 @@ function Hero() {
 
         <div className="hero-buttons">
 
-          <button className="primary-btn">
+          <button
+            className="primary-btn"
+            onClick={() => fileInputRef.current?.click()}
+          >
             <Upload size={18} />
             Upload File
           </button>
@@ -88,8 +184,13 @@ function Hero() {
               <div className="file-row">
 
                 <div>
-                  <h4>employee_data.xlsx</h4>
-                  <p>Last scanned • 2 min ago</p>
+                  <h4>{uploadedFile || "employee_data.xlsx"}</h4>
+
+                 <p>
+                     {summary
+                         ? "Successfully Anonymized"
+                         : "Ready to Scan"}
+                 </p>
                 </div>
 
                 <span className="success-tag">
@@ -98,62 +199,134 @@ function Hero() {
 
               </div>
 
+              {summary && (
               <div className="progress-section">
 
                 <div className="progress-top">
-                  <span>Privacy Scan</span>
-                  <span>99%</span>
+                  <span>
+                      {summary ? "Privacy Scan Completed" : "Privacy Scan"}
+                  </span>
+                  <span>{summary ? "100%" : "99%"}</span>
                 </div>
 
                 <div className="progress-bar">
-                  <div className="progress-fill"></div>
+                  <div
+                      className="progress-fill"
+                      style={{
+                          width: summary ? "100%" : "99%"
+                      }}
+                  ></div>
+
                 </div>
 
+
               </div>
+              )}
 
               <div className="detect-title">
-                Sensitive Information
+                  {summary ? "Scan Results" : "Sensitive Information"}
               </div>
 
               <div className="detect-grid">
 
-                <div className="detect-item">
-                  <span>Name</span>
-                  <span>Protected</span>
-                </div>
+                  {!summary ? (
 
-                <div className="detect-item">
-                  <span>Email</span>
-                  <span>Protected</span>
-                </div>
+                      <>
+                          <div className="detect-item">
+                              <span>Email</span>
+                              <span>Waiting</span>
+                          </div>
 
-                <div className="detect-item">
-                  <span>Phone</span>
-                  <span>Protected</span>
-                </div>
+                          <div className="detect-item">
+                              <span>Phone</span>
+                              <span>Waiting</span>
+                          </div>
 
-                <div className="detect-item">
-                  <span>PAN</span>
-                  <span>Protected</span>
-                </div>
+                          <div className="detect-item">
+                              <span>PAN</span>
+                              <span>Waiting</span>
+                          </div>
+
+                          <div className="detect-item">
+                              <span>Aadhaar</span>
+                              <span>Waiting</span>
+                          </div>
+                      </>
+
+                  ) : (
+
+                      <>
+                          <div className="detect-item">
+                              <span>Emails Found</span>
+                              <span>{summary.emailCount}</span>
+                          </div>
+
+                          <div className="detect-item">
+                              <span>Phones Found</span>
+                              <span>{summary.phoneCount}</span>
+                          </div>
+
+                          <div className="detect-item">
+                              <span>PAN Found</span>
+                              <span>{summary.panCount}</span>
+                          </div>
+
+                          <div className="detect-item">
+                              <span>Aadhaar Found</span>
+                              <span>{summary.aadhaarCount}</span>
+                          </div>
+
+                          <div className="detect-item">
+                              <span>Passport Found</span>
+                              <span>{summary.passportCount}</span>
+                          </div>
+
+                          <div className="detect-item">
+                              <span>Cards Found</span>
+                              <span>{summary.cardCount}</span>
+                          </div>
+
+                          <div className="detect-item">
+                              <span>IFSC Found</span>
+                              <span>{summary.ifscCount}</span>
+                          </div>
+
+                          <div className="detect-item">
+                              <span>Accounts Found</span>
+                              <span>{summary.accountCount}</span>
+                          </div>
+                      </>
+
+                  )}
 
               </div>
 
               <div className="stats-grid">
 
                 <div className="mini-card">
-                  <h2>248</h2>
-                  <p>Files</p>
+                    <h2>{summary ? 1 : 248}</h2>
+                    <p>Files Scanned</p>
                 </div>
 
                 <div className="mini-card">
-                  <h2>18</h2>
-                  <p>Protected</p>
+                    <h2>
+                        {summary
+                            ? summary.emailCount +
+                              summary.phoneCount +
+                              summary.panCount +
+                              summary.aadhaarCount +
+                              summary.passportCount +
+                              summary.cardCount +
+                              summary.ifscCount +
+                              summary.accountCount
+                            : 18}
+                    </h2>
+                    <p>Protected</p>
                 </div>
 
                 <div className="mini-card">
-                  <h2>99.8%</h2>
-                  <p>Accuracy</p>
+                    <h2>{summary ? "100%" : "99.8%"}</h2>
+                    <p>Scan Complete</p>
                 </div>
 
               </div>
