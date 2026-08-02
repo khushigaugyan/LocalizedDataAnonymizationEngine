@@ -1,19 +1,53 @@
-import { useRef, useState } from "react";
-
+import {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import "./Hero.css";
 import {
   ShieldCheck,
   Upload,
 } from "lucide-react";
 
-function Hero() {
+const Hero = forwardRef((props, ref) => {
     const fileInputRef = useRef(null);
+    useImperativeHandle(ref, () => ({
+
+        openFilePicker(type = "") {
+
+            setAcceptedType(type);
+
+            fileInputRef.current.value = "";
+
+            fileInputRef.current.click();
+
+        }
+
+    }));
 
         const [summary, setSummary] = useState(null);
         const [uploadedFile, setUploadedFile] = useState("");
 
-      const handleFileUpload = async (event) => {
-           const file = event.target.files[0];
+        const [loading, setLoading] = useState(false);
+        const [showDemo, setShowDemo] = useState(false);
+        const [acceptedType, setAcceptedType] = useState("");
+        const [dragActive, setDragActive] = useState(false);
+
+        const openPicker = (type = "") => {
+
+            setAcceptedType(type);
+
+            fileInputRef.current.value = "";
+
+            fileInputRef.current.click();
+
+        };
+
+      const uploadFile = async (file) => {
+
+          if (!file) return;
+
 
               if (!file) return;
 
@@ -25,7 +59,7 @@ function Hero() {
           formData.append("file", file);
 
           try {
-
+              setLoading(true);
               // Analyze File
               const analyzeResponse = await fetch("http://localhost:8080/api/analyze", {
                   method: "POST",
@@ -75,35 +109,99 @@ function Hero() {
               a.remove();
 
               window.URL.revokeObjectURL(url);
-//               a.remove();
-//
-//               window.URL.revokeObjectURL(url);
 
           } catch (error) {
 
               console.error(error);
               alert(error.message);
 
-          }
+          } finally {
+                setLoading(false);
+            }
       };
   return (
     <section className="hero">
 
+        {showDemo && (
+            <div
+                className="demo-overlay"
+                onClick={() => setShowDemo(false)}
+            >
+                <div
+                    className="demo-modal"
+                    onClick={(e) => e.stopPropagation()}
+                >
+
+                    <h2>How CloakData Works</h2>
+
+                    <p><strong>Original</strong></p>
+
+                    <pre>
+        Email: john@gmail.com
+        Phone: 9876543210
+        PAN: ABCDE1234F
+                    </pre>
+
+                    <p><strong>Anonymized</strong></p>
+
+                    <pre>
+        Email: [EMAIL]
+        Phone: [PHONE]
+        PAN: [PAN]
+                    </pre>
+
+                    <button
+                        className="primary-btn"
+                        onClick={() => setShowDemo(false)}
+                    >
+                        Close
+                    </button>
+
+                </div>
+            </div>
+        )}
       {/* LEFT CONTENT */}
 
       <input
         type="file"
+        accept={acceptedType}
         ref={fileInputRef}
         style={{ display: "none" }}
         onClick={() => console.log("Input clicked")}
-        onChange={(e) => {
-          console.log("onChange fired");
-          console.log(e.target.files);
-          handleFileUpload(e);
-        }}
+        onChange={(e) => uploadFile(e.target.files[0])}
       />
 
-      <div className="hero-content">
+      <div
+          className={`hero-content ${dragActive ? "drag-active" : ""}`}
+          onDragEnter={(e) => {
+              e.preventDefault();
+              console.log("ENTER");
+              setDragActive(true);
+          }}
+
+          onDragOver={(e) => {
+              e.preventDefault();
+              console.log("OVER");
+              setDragActive(true);
+          }}
+
+          onDragLeave={(e) => {
+              e.preventDefault();
+              console.log("LEAVE");
+              setDragActive(false);
+          }}
+
+          onDrop={(e) => {
+              e.preventDefault();
+              console.log("DROP");
+
+              setDragActive(false);
+
+              const file = e.dataTransfer.files[0];
+
+              uploadFile(file);
+          }}
+      >
 
         <div className="hero-tag">
           <ShieldCheck size={18} />
@@ -132,8 +230,11 @@ function Hero() {
             Upload File
           </button>
 
-          <button className="secondary-btn">
-            View Demo
+          <button
+              className="secondary-btn"
+              onClick={() => setShowDemo(true)}
+          >
+              View Demo
           </button>
 
         </div>
@@ -341,6 +442,6 @@ function Hero() {
 
     </section>
   );
-}
+});
 
 export default Hero;

@@ -1,11 +1,11 @@
 import "./Navbar.css";
 import logo from "../../assets/logo.png";
 
-function Navbar() {
+function Navbar({ onUploadClick }) {
   return (
     <nav className="navbar">
 
-      <div className="navbar-brand">
+     <a href="#home" className="navbar-brand">
         <img
           src={logo}
           alt="CloakData Logo"
@@ -13,19 +13,30 @@ function Navbar() {
         />
 
         <h2>CloakData</h2>
-      </div>
-
+      </a>
       <ul className="nav-links">
         <li><a href="#features">Features</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#supported-files">Supported Files</a></li>
         <li><a href="#about">About</a></li>
-        <li><a href="#github">GitHub</a></li>
+
+        <li>
+            <a
+                href="https://github.com/khushigaugyan/LocalizedDataAnonymizationEngine"
+                target="_blank"
+                rel="noreferrer"
+            >
+                GitHub
+            </a>
+        </li>
       </ul>
 
-      <button className="upload-btn">
-        Upload File
+      <button
+          className="upload-btn"
+          onClick={onUploadClick}
+      >
+          Upload
       </button>
-
     </nav>
   );
 }

@@ -65,3 +65,44 @@
     color: #64748B;
     line-height: 1.7;
 }
+
+.feature-card{
+    cursor:pointer;
+}
+
+.feature-modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.feature-modal{
+    background:white;
+    width:520px;
+    max-width:90%;
+    border-radius:20px;
+    padding:35px;
+    position:relative;
+}
+
+.feature-modal h2{
+    margin-bottom:20px;
+}
+
+.feature-modal ul{
+    padding-left:20px;
+    line-height:2;
+}
+
+.close-btn{
+    position:absolute;
+    top:18px;
+    right:18px;
+    border:none;
+    background:none;
+    cursor:pointer;
+}

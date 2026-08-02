@@ -53,3 +53,6 @@
     font-weight: 600;
     color: #1E293B;
 }
+.file-type-card{
+    cursor:pointer;
+}

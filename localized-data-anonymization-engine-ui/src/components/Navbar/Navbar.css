@@ -92,3 +92,39 @@
     background: #1D4ED8;
     transform: translateY(-2px);
 }
+
+@media (max-width: 768px) {
+
+    .navbar{
+        padding: 14px 20px;
+    }
+
+    .nav-links{
+        display:none;
+    }
+
+    .upload-btn{
+        padding:10px 20px;
+        font-size:14px;
+    }
+
+    .logo img{
+        width:42px;
+    }
+
+    .logo h2{
+        font-size:28px;
+    }
+
+}
+.logo{
+
+    gap:8px;
+
+}
+
+.logo h2{
+
+    white-space:nowrap;
+
+}

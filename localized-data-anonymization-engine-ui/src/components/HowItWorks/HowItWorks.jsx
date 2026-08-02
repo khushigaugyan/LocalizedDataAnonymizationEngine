@@ -3,7 +3,7 @@ import { Upload, ScanSearch, Download } from "lucide-react";
 
 function HowItWorks() {
     return (
-        <section className="how-it-works">
+        <section id="how-it-works" className="how-it-works">
 
             <div className="how-header">
                 <h2>How CloakData Works</h2>

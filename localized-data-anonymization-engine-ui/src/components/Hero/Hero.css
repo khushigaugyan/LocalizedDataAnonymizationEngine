@@ -321,24 +321,72 @@
 
 @media (max-width:768px){
 
+    .hero{
+        flex-direction:column;
+        gap:50px;
+    }
+
+    .hero-content,
+    .hero-image{
+        width:100%;
+    }
+
+    .hero-content{
+        order:1;
+    }
+
+    .hero-image{
+        order:2;
+    }
+
+    .hero h1{
+        font-size:52px;
+    }
+
     .hero-buttons{
         flex-direction:column;
     }
 
-    .hero-stats{
-        flex-direction:column;
-        gap:25px;
-    }
-
-    .hero-content h1{
-        font-size:38px;
-    }
-
-    .stats-grid{
-        grid-template-columns:1fr;
-    }
-
-    .app-window{
+    .hero-buttons button{
         width:100%;
     }
+}
+.demo-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.demo-modal{
+    width:550px;
+    max-width:90%;
+    background:white;
+    border-radius:18px;
+    padding:35px;
+}
+
+.demo-modal pre{
+    background:#F8FAFC;
+    padding:18px;
+    border-radius:12px;
+    overflow:auto;
+}
+
+.demo-modal h2{
+    margin-bottom:20px;
+}
+
+.demo-modal .primary-btn{
+    margin-top:20px;
+}
+
+.drag-active{
+    border:2px dashed #2563eb;
+    background:#eff6ff;
+    border-radius:20px;
+    transition:.3s;
 }
