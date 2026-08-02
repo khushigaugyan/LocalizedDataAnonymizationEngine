@@ -12,8 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin(
         origins = {
                 "http://localhost:5173",
-                "https://localized-data-anonymization-engine-git-main-khushigaugyan1.vercel.app",
-                "https://localized-data-anonymization-engine.vercel.app"
+                "https://localized-data-anonymization-engine-khushigaugyan1.vercel.app",
+                "https://localized-data-anonymization-engine-git-main-khushigaugyan1.vercel.app"
         },
         exposedHeaders = "Content-Disposition"
 )
