@@ -61,7 +61,7 @@ const Hero = forwardRef((props, ref) => {
           try {
               setLoading(true);
               // Analyze File
-              const analyzeResponse = await fetch("http://localhost:8080/api/analyze", {
+              const analyzeResponse = await fetch("localizeddataanonymizationengine-production.up.railway.app/api/upload/api/analyze", {
                   method: "POST",
                   body: formData,
               });
@@ -75,7 +75,7 @@ const Hero = forwardRef((props, ref) => {
               setSummary(analysis);
 
               // Download Anonymized File
-              const uploadResponse = await fetch("http://localhost:8080/api/upload", {
+              const uploadResponse = await fetch("localizeddataanonymizationengine-production.up.railway.app/api/upload/api/upload", {
                   method: "POST",
                   body: formData,
               });
