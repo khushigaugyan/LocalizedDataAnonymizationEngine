@@ -61,10 +61,13 @@ const Hero = forwardRef((props, ref) => {
           try {
               setLoading(true);
               // Analyze File
-              const analyzeResponse = await fetch("localizeddataanonymizationengine-production.up.railway.app/api/upload/api/analyze", {
-                  method: "POST",
-                  body: formData,
-              });
+              const analyzeResponse = await fetch(
+                  "https://localizeddataanonymizationengine-production.up.railway.app/api/analyze",
+                  {
+                      method: "POST",
+                      body: formData,
+                  }
+              );
 
               if (!analyzeResponse.ok) {
                   throw new Error("Analysis failed");
@@ -75,10 +78,13 @@ const Hero = forwardRef((props, ref) => {
               setSummary(analysis);
 
               // Download Anonymized File
-              const uploadResponse = await fetch("localizeddataanonymizationengine-production.up.railway.app/api/upload/api/upload", {
-                  method: "POST",
-                  body: formData,
-              });
+              const uploadResponse = await fetch(
+                  "https://localizeddataanonymizationengine-production.up.railway.app/api/upload",
+                  {
+                      method: "POST",
+                      body: formData,
+                  }
+              );
 
               if (!uploadResponse.ok) {
                   throw new Error("Upload failed");
