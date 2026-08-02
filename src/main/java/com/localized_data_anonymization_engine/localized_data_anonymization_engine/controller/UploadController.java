@@ -9,14 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(
-        origins = {
-                "http://localhost:5173",
-                "https://localized-data-anonymization-engine-khushigaugyan1.vercel.app",
-                "https://localized-data-anonymization-engine-git-main-khushigaugyan1.vercel.app"
-        },
-        exposedHeaders = "Content-Disposition"
-)
 public class UploadController {
 
     @Autowired
